@@ -1,5 +1,6 @@
 # carrot-game
-## a game made using Javascript 자바스크립트를 이용한 간단한 플래시 게임<br/>#### <p>source code: Dream Coding academy</p>
+## a game made using Javascript 자바스크립트를 이용한 간단한 플래시 게임 
+#### source code: Dream Coding academy
 
 <img src="https://user-images.githubusercontent.com/77523846/136167903-cb81df06-cb39-421e-877b-974850b97c18.gif" width="500"/>
 
