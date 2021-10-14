@@ -1,4 +1,6 @@
 'use strict'
+import PopUp from './popup.js';
+
 const bgSound = new Audio('./sound/bg.mp3');
 const carrotSound = new Audio('./sound/carrot_pull.mp3');
 const bugSound = new Audio('./sound/bug_pull.mp3');
@@ -11,10 +13,6 @@ const gameBtn = document.querySelector(".game_btn");
 const gameTimer = document.querySelector(".game_timer");
 const gameScore = document.querySelector(".game_score");
 
-const popup = document.querySelector(".pop-up");
-const popupMessage = document.querySelector(".pop-up_message");
-const popupRefresh = document.querySelector(".pop-up_refresh");
-
 const IMAGE_SIZE = 80;
 const CARROT_COUNT = 5;
 const BUG_COUNT = 5;
@@ -23,6 +21,11 @@ const GAME_DURATION_SEC = 5;
 let started = false;
 let score = 0;
 let timer = undefined;
+
+const gameFinishBanner = new PopUp();
+gameFinishBanner.setClickListener(()=>{
+    startGame();
+});
 
 field.addEventListener('click', onFieldClick); //event delegation
 
@@ -34,11 +37,6 @@ gameBtn.addEventListener('click', ()=>{
         startGame();
         console.log(started.toString());//false
     }
-});
-
-popupRefresh.addEventListener('click', ()=>{
-    startGame();
-    hidePopup();
 });
 
 function startGame(){
@@ -54,7 +52,7 @@ function stopGame(){
     started = false;
     stopGameTimer();
     hideGameBtn();
-    showPopUpWithText('Replay❓');
+    gameFinishBanner.showWithText('Replay❓');
     playSound(alertSound);
     stopSound(bgSound);
 }
@@ -69,7 +67,7 @@ function finishGame(win){
       playSound(bugSound);
     }
     stopSound(bgSound);
-    showPopUpWithText(win ? 'You Won🎉' : 'You Lost😭');
+    gameFinishBanner.showWithText(win ? 'You Won🎉' : 'You Lost😭');
 }
 
 function showStopBtn(){
@@ -109,15 +107,6 @@ function updateTimerText(time){
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     gameTimer.textContent = `${minutes}:${seconds}`;
-}
-
-function showPopUpWithText(text){
-    popup.classList.remove("pop-up-hide");
-    popupMessage.textContent = text;
-}
-
-function hidePopup(){
-    popup.classList.add("pop-up-hide");
 }
 
 function initGame() {
