@@ -1,6 +1,4 @@
-'use strict'
 import * as sound from './sound.js';
-
 const IMAGE_SIZE = 80;
 
 export default class Field {
