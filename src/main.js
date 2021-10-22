@@ -29,14 +29,14 @@ gameFinishBanner.setClickListener(()=>{
 const gameField = new Field(CARROT_COUNT, BUG_COUNT);
 gameField.setClickListener(onItemClick);
 
-function onItemClick(){
-  if(!started){
+function onItemClick(item) {
+  if (!started){
     return;
   }
-  if(item === 'carrot'){
-    score++
+  if (item === 'carrot') {
+    score++;
     updateScoreBoard();
-    if(score === CARROT_COUNT){
+    if (score === CARROT_COUNT) {
 			finishGame(true);
     }
 	} else if (item === 'bug') {
