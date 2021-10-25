@@ -73,26 +73,12 @@ class Game {
     sound.playBackground();
   }
 
-  stop(){
+  stop(reason){
     this.started = false;
     this.stopGameTimer();
     this.hideGameBtn();
-    sound.playAlert();
     sound.stopBackground();
-    this.onGameStop && this.onGameStop(Reason.cancel);
-  }
-
-  finish(win) {
-    this.started = false;
-    this.hideGameBtn();
-    this.stopGameTimer();
-    if(win){
-      sound.playWin();
-    }else {
-      sound.playBug();
-    }
-    sound.stopBackground();
-    this.onGameStop && this.onGameStop(win ? Reason.win : Reason.lose);
+    this.onGameStop && this.onGameStop(reason);
   }
 
   onItemClick = item => {
@@ -103,10 +89,10 @@ class Game {
       this.score++;
       this.updateScoreBoard(this.score);
       if (this.score === this.carrotCount) {
-        this.finish(true);
+        this.stop(Reason.win);
       }
     } else if (item === 'bug') {
-      this.finish(false);
+      this.stop(Reason.lose);
     }
   }
 
@@ -133,7 +119,7 @@ class Game {
       if(remainingTimeSec <= 0) {
         clearInterval(this.timer);
         if(this.started){
-          this.finish(this.score === this.carrotCount);
+          this.stop(this.score === this.carrotCount ? Reason.win : Reason.lose);
         }
         return; //return하지 않으면 setInterval()가 -1이 되도록 멈추지 않음
       }
