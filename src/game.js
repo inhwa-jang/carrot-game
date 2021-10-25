@@ -1,11 +1,11 @@
-import Field from './field.js';
+import { Field , ItemType } from './field.js';
 import * as sound from './sound.js';
 
 export const Reason = Object.freeze({
   win: 'win',
   lose: 'lose',
   cancel: 'cancel',
-})
+});
 
 //Build Pattern
 export class GameBuilder {
@@ -44,11 +44,10 @@ class Game {
 
     this.gameBtn.addEventListener('click', ()=>{
       if(this.started){
-        this.stop();
-        console.log(this.started.toString());//true
+        this.stop(Reason.cancel);
+        sound.playAlert();
       } else {
         this.start();
-        console.log(this.started.toString());//false
       }
     });
 
@@ -78,6 +77,11 @@ class Game {
     this.stopGameTimer();
     this.hideGameBtn();
     sound.stopBackground();
+    if (reason === Reason.win) {
+      sound.playWin();
+    } else if (reason === Reason.lose) {
+      sound.playBug();
+    }
     this.onGameStop && this.onGameStop(reason);
   }
 
@@ -85,13 +89,13 @@ class Game {
     if (!this.started){
       return;
     }
-    if (item === 'carrot') {
+    if (item === ItemType.carrot) {
       this.score++;
       this.updateScoreBoard(this.score);
       if (this.score === this.carrotCount) {
         this.stop(Reason.win);
       }
-    } else if (item === 'bug') {
+    } else if (item === ItemType.bug) {
       this.stop(Reason.lose);
     }
   }
